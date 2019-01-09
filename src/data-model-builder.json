@@ -1,0 +1,126 @@
+{
+  "elements": [
+    {
+      "type": "text",
+      "value": "Form Builder"
+    },
+    {
+      "label": "",
+      "type": "button",
+      "value": "Add Input"
+    }
+  ],
+  "child-fieldsets": [
+    {
+      "elements": [
+        {
+          "label": "Question",
+          "type": "input-text",
+          "value": "Do you own a car?"
+        },
+        {
+          "label": "Type",
+          "type": "input-select",
+          "value": "Yes / No"
+        },
+        {
+          "label": "",
+          "type": "button",
+          "value": "Add Sub-Input"
+        },
+        {
+          "label": "",
+          "type": "button",
+          "value": "Delete"
+        }
+      ],
+      "child-fieldsets": [
+        {
+          "elements": [
+            {
+              "label": "Condition",
+              "type": "input-select",
+              "value": "Equals"
+            },
+            {
+              "label": "",
+              "type": "input-select",
+              "value": "Yes"
+            },
+            {
+              "label": "Question",
+              "type": "input-text",
+              "value": "What is your car's model?"
+            },
+            {
+              "label": "Type",
+              "type": "input-select",
+              "value": "Text"
+            },
+            {
+              "label": "",
+              "type": "button",
+              "value": "Add Sub-Input"
+            },
+            {
+              "label": "",
+              "type": "button",
+              "value": "Delete"
+            }
+          ],
+          "child-fieldsets": []
+        }
+      ]
+    },
+    {
+      "elements": [
+        {
+          "label": "Question",
+          "type": "input-text",
+          "value": "What year was your building built?"
+        },
+        {
+          "label": "Type",
+          "type": "input-select",
+          "value": "Number"
+        },
+        {
+          "label": "",
+          "type": "button",
+          "value": "Add Sub-Input"
+        },
+        {
+          "label": "",
+          "type": "button",
+          "value": "Delete"
+        }
+      ],
+      "child-fieldsets": []
+    },
+    {
+      "elements": [
+        {
+          "label": "Question",
+          "type": "input-text",
+          "value": "What is your company name?"
+        },
+        {
+          "label": "Type",
+          "type": "input-select",
+          "value": "Text"
+        },
+        {
+          "label": "",
+          "type": "button",
+          "value": "Add Sub-Input"
+        },
+        {
+          "label": "",
+          "type": "button",
+          "value": "Delete"
+        }
+      ],
+      "child-fieldsets": []
+    }
+  ]
+}
