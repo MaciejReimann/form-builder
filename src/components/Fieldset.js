@@ -13,7 +13,6 @@ export default class Fieldset extends Component {
       subInputs: []
     };
     this.addSubInput = this.addSubInput.bind(this);
-    this.deleteSubInput = this.deleteSubInput.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
@@ -39,17 +38,6 @@ export default class Fieldset extends Component {
       ]
     });
     // this.props.onChange();
-  }
-
-  deleteSubInput(index) {
-    const { subInputs } = this.state;
-
-    // this.setState({
-    //   subInputs: [
-    //     ...subInputs.slice(0, index),
-    //     ...subInputs.slice(index + 1, subInputs.length)
-    //   ]
-    // });
   }
 
   render() {
@@ -87,7 +75,11 @@ export default class Fieldset extends Component {
           <Fieldset key={this.state.uniqueKey} />
         ))}
         <button onClick={this.addSubInput}>Add Sub-Input</button>
-        <button onClick={this.props.onDelete}>Delete This</button>
+        <button
+          onClick={() => this.props.onDelete(this.props.values.uniqueKey)}
+        >
+          Delete This
+        </button>
       </fieldset>
     );
   }

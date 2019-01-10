@@ -12,6 +12,7 @@ class App extends Component {
       subInputs: []
     };
     this.addInput = this.addInput.bind(this);
+    this.deleteInput = this.deleteInput.bind(this);
     this.update = this.update.bind(this);
   }
 
@@ -45,6 +46,19 @@ class App extends Component {
     });
   }
 
+  deleteInput(key) {
+    const { subInputs } = this.state;
+    const deletedElementIndex = subInputs.indexOf(
+      ...subInputs.filter(input => key === input.uniqueKey)
+    );
+    this.setState({
+      subInputs: [
+        ...subInputs.slice(0, deletedElementIndex),
+        ...subInputs.slice(deletedElementIndex + 1, subInputs.length)
+      ]
+    });
+  }
+
   render() {
     const fieldsets =
       this.state.subInputs.length > 0 ? (
@@ -52,6 +66,7 @@ class App extends Component {
           <Fieldset
             key={el.uniqueKey}
             onUpdate={this.update}
+            onDelete={this.deleteInput}
             values={this.state.subInputs[i]}
           />
         ))
