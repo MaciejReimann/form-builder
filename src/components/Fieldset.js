@@ -43,7 +43,7 @@ export default class Fieldset extends Component {
   render() {
     return (
       <fieldset>
-        <legend>Question no: {this.props.base}</legend>
+        <legend>Question no: {this.props.values.position + 1}</legend>
         <p>
           <label>Conditon:</label>
           <select>

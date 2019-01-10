@@ -55,7 +55,9 @@ class App extends Component {
       subInputs: [
         ...subInputs.slice(0, deletedElementIndex),
         ...subInputs.slice(deletedElementIndex + 1, subInputs.length)
-      ]
+      ].map((input, i) => {
+        return { ...input, position: i };
+      })
     });
   }
 
