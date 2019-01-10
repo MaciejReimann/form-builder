@@ -5,32 +5,32 @@
       "condition-value": "",
       "question": "Do you own a car",
       "type": "radio",
-      "children": [
+      "subInputs": [
         {
           "condition-type": "equals",
           "condition-value": "yes",
           "question": "What is your car's model?",
           "type": "text",
-          "children": [
+          "subInputs": [
             {
               "condition-type": "equals",
               "condition-value": "Ford",
               "question": "What color is your Ford?",
               "type": "text",
-              "children": []
+              "subInputs": []
             },
             {
               "condition-type": "equals",
               "condition-value": "Ford",
               "question": "How many wheels are on your Ford?",
               "type": "number",
-              "children": [
+              "subInputs": [
                 {
                   "condition-type": "greater-than",
                   "condition-value": "4",
                   "question": "Is your Ford road legal?",
                   "type": "radio",
-                  "children": []
+                  "subInputs": []
                 }
               ]
             },
@@ -39,7 +39,7 @@
               "condition-value": "Toyota",
               "question": "Has your Toyota been recalled?",
               "type": "radio",
-              "children": []
+              "subInputs": []
             }
           ]
         }
@@ -50,14 +50,14 @@
       "condition-value": "",
       "question": "What year was your building built?",
       "type": "number",
-      "children": []
+      "subInputs": []
     },
     {
       "condition-type": "",
       "condition-value": "",
       "question": "What's your company name?",
       "type": "text",
-      "children": []
+      "subInputs": []
     }
   ]
 }

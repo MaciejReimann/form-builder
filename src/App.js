@@ -1,19 +1,72 @@
 import React, { Component } from "react";
 import "./app.css";
 
-import FormBuilder from "./components/FormBuilder";
+import Fieldset from "./components/Fieldset";
+import Welcome from "./components/Welcome";
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      uniqueKey: 0,
+      subInputs: []
+    };
+    this.addInput = this.addInput.bind(this);
+    this.update = this.update.bind(this);
   }
+
+  update(data) {
+    const { subInputs } = this.state;
+    console.log(data);
+    this.setState({
+      subInputs: [
+        ...subInputs.slice(0, data.position),
+        data,
+        ...subInputs.slice(data.position + 1, subInputs.length)
+      ]
+    });
+  }
+
+  addInput() {
+    this.setState({
+      uniqueKey: this.state.uniqueKey + 1,
+      subInputs: [
+        ...this.state.subInputs,
+        {
+          position: this.state.subInputs.length,
+          uniqueKey: this.state.uniqueKey + 1,
+          conditionType: "equals",
+          conditionValue: "",
+          question: "",
+          type: "text",
+          subInputs: []
+        }
+      ]
+    });
+  }
+
   render() {
+    const fieldsets =
+      this.state.subInputs.length > 0 ? (
+        this.state.subInputs.map((el, i) => (
+          <Fieldset
+            key={el.uniqueKey}
+            onUpdate={this.update}
+            values={this.state.subInputs[i]}
+          />
+        ))
+      ) : (
+        <Welcome />
+      );
     return (
       <div className="app">
         <header className="header" />
         <main>
-          <FormBuilder />
+          <fieldset>
+            <legend>Form Builder</legend>
+            {fieldsets}
+            <button onClick={this.addInput}>Add Input</button>
+          </fieldset>
         </main>
       </div>
     );
