@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 
-export default class Fieldset extends Component {
+import lastItemOf from "../helpers/lastItemOf";
+import QuestionInput from "./QuestionInput";
+
+export default class InputGroup extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,7 +22,9 @@ export default class Fieldset extends Component {
   onChange(e) {
     // console.log(this.props.values);
     const { value, name } = e.target;
-    this.props.onUpdate({ ...this.props.values, [name]: value });
+    this.setState({
+      [name]: value
+    });
   }
 
   addSubInput() {
@@ -37,13 +42,12 @@ export default class Fieldset extends Component {
         }
       ]
     });
-    // this.props.onChange();
   }
 
   render() {
     return (
       <fieldset>
-        <legend>Question no: {this.props.values.position + 1}</legend>
+        <legend>Question no: {this.props.position + 1}</legend>
         <p>
           <label>Conditon:</label>
           <select>
@@ -54,15 +58,7 @@ export default class Fieldset extends Component {
             <option>No</option>
           </select>
         </p>
-        <p>
-          <label>Question:</label>
-          <input
-            name="question"
-            type="text"
-            onChange={this.onChange}
-            value={this.props.values.question}
-          />
-        </p>
+        <QuestionInput />
         <p>
           <label>Type:</label>
           <select>
@@ -71,9 +67,9 @@ export default class Fieldset extends Component {
             <option>Number</option>
           </select>
         </p>
-        {this.state.subInputs.map(id => (
-          <Fieldset key={this.state.uniqueKey} />
-        ))}
+        {/* {this.state.subInputs.map(id => (
+          <InputGroup key={this.state.uniqueKey} />
+        ))} */}
         <button onClick={this.addSubInput}>Add Sub-Input</button>
         <button
           onClick={() => this.props.onDelete(this.props.values.uniqueKey)}

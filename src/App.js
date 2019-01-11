@@ -1,87 +1,92 @@
 import React, { Component } from "react";
 import "./app.css";
 
-import Fieldset from "./components/Fieldset";
+import InputGroup from "./components/InputGroup";
 import Welcome from "./components/Welcome";
+
+import lastItemOf from "./helpers/lastItemOf";
+
+const dataModel = {
+  conditionType: "equals",
+  conditionValue: "",
+  question: "",
+  type: "text",
+  subInputs: []
+};
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      uniqueKey: 0,
       subInputs: []
     };
     this.addInput = this.addInput.bind(this);
     this.deleteInput = this.deleteInput.bind(this);
-    this.update = this.update.bind(this);
+    this.updateState = this.updateState.bind(this);
   }
 
-  update(data) {
-    const { subInputs } = this.state;
-    console.log(data);
-    this.setState({
-      subInputs: [
-        ...subInputs.slice(0, data.position),
-        data,
-        ...subInputs.slice(data.position + 1, subInputs.length)
-      ]
-    });
+  updateState(data) {
+    // const { subInputs } = this.state;
+    // console.log(data);
+    // this.setState({
+    //   subInputs: [
+    //     ...subInputs.slice(0, data.position),
+    //     data,
+    //     ...subInputs.slice(data.position + 1, subInputs.length)
+    //   ]
+    // });
   }
 
   addInput() {
+    const { subInputs } = this.state;
+    // Assign value to key if different than default
+    let key;
+    if (subInputs.length) {
+      key = lastItemOf(subInputs).key + 1;
+    } else {
+      key = 1;
+    }
     this.setState({
-      uniqueKey: this.state.uniqueKey + 1,
-      subInputs: [
-        ...this.state.subInputs,
-        {
-          position: this.state.subInputs.length,
-          uniqueKey: this.state.uniqueKey + 1,
-          conditionType: "equals",
-          conditionValue: "",
-          question: "",
-          type: "text",
-          subInputs: []
-        }
-      ]
+      subInputs: [...this.state.subInputs, { ...dataModel, key }]
     });
   }
 
   deleteInput(key) {
-    const { subInputs } = this.state;
-    const deletedElementIndex = subInputs.indexOf(
-      ...subInputs.filter(input => key === input.uniqueKey)
-    );
-    this.setState({
-      subInputs: [
-        ...subInputs.slice(0, deletedElementIndex),
-        ...subInputs.slice(deletedElementIndex + 1, subInputs.length)
-      ].map((input, i) => {
-        return { ...input, position: i };
-      })
-    });
+    // const { subInputs } = this.state;
+    // const deletedElementIndex = subInputs.indexOf(
+    //   ...subInputs.filter(input => key === input.uniqueKey)
+    // );
+    // this.setState({
+    //   subInputs: [
+    //     ...subInputs.slice(0, deletedElementIndex),
+    //     ...subInputs.slice(deletedElementIndex + 1, subInputs.length)
+    //   ].map((input, i) => {
+    //     return { ...input, position: i };
+    //   })
+    // });
   }
 
   render() {
-    const fieldsets =
-      this.state.subInputs.length > 0 ? (
-        this.state.subInputs.map((el, i) => (
-          <Fieldset
-            key={el.uniqueKey}
-            onUpdate={this.update}
-            onDelete={this.deleteInput}
-            values={this.state.subInputs[i]}
-          />
-        ))
-      ) : (
-        <Welcome />
-      );
+    const { subInputs } = this.state;
+    const inputGroups = subInputs.length ? (
+      subInputs.map((el, i) => (
+        <InputGroup
+          key={el.key}
+          position={i}
+          onUpdate={this.updateState}
+          onDelete={this.deleteInput}
+        />
+      ))
+    ) : (
+      <Welcome />
+    );
     return (
       <div className="app">
         <header className="header" />
         <main>
           <fieldset>
             <legend>Form Builder</legend>
-            {fieldsets}
+            {inputGroups}
             <button onClick={this.addInput}>Add Input</button>
           </fieldset>
         </main>
