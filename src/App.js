@@ -64,7 +64,7 @@ class App extends Component {
       subInputs.map((input, i) => (
         <InputGroup
           key={input.key}
-          position={i}
+          position={i + 1}
           dataPreset={subInputs[i]}
           onUpdate={this.updateState}
           onDelete={this.deleteInput}

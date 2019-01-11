@@ -18,15 +18,12 @@ export default class InputGroup extends Component {
     super(props);
     this.state = {};
     this.addSubInput = this.addSubInput.bind(this);
+    this.deleteSubInput = this.deleteSubInput.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
   componentWillMount() {
     this.setState(this.props.dataPreset);
-  }
-
-  calculatePosition() {
-    // return (this.props.position + 1).toString() +
   }
 
   onChange(e) {
@@ -51,7 +48,7 @@ export default class InputGroup extends Component {
     });
   }
 
-  deleteInput(key) {
+  deleteSubInput(key) {
     this.setState({
       subInputs: deleteItemByKeyValue(this.state.subInputs, key)
     });
@@ -62,16 +59,16 @@ export default class InputGroup extends Component {
     const inputGroup = subInputs.map((input, i) => (
       <InputGroup
         key={input.key}
-        position={i}
+        position={`${this.props.position}.${i + 1}`}
         dataPreset={subInputs[i]}
         onUpdate={this.updateState}
-        onDelete={this.deleteInput}
+        onDelete={this.deleteSubInput}
       />
     ));
 
     return (
       <fieldset>
-        <legend>Question no: {this.props.position + 1}</legend>
+        <legend>Question no: {this.props.position}</legend>
         <p>
           <label>Conditon:</label>
           <select>
