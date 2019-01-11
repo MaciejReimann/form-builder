@@ -5,13 +5,7 @@ import QuestionInput from "./QuestionInput";
 import lastItemOf from "../helpers/lastItemOf";
 import deleteItemByKeyValue from "../helpers/deleteItemByKeyValue";
 
-const dataModel = {
-  conditionType: "equals",
-  conditionValue: "",
-  question: "",
-  type: "text",
-  subInputs: []
-};
+import dataModel from "../dataModel";
 
 export default class InputGroup extends Component {
   constructor(props) {
@@ -19,19 +13,33 @@ export default class InputGroup extends Component {
     this.state = {};
     this.addSubInput = this.addSubInput.bind(this);
     this.deleteSubInput = this.deleteSubInput.bind(this);
-    this.onChange = this.onChange.bind(this);
+    this.sendStateUp = this.sendStateUp.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState(this.props.dataPreset);
   }
 
-  onChange(e) {
-    // // console.log(this.props.values);
-    // const { value, name } = e.target;
-    // this.setState({
-    //   [name]: value
-    // });
+  // componentDidUpdate(prevProps, prevState) {
+  //   this.sendStateUp(this.state);
+  // }
+
+  updateState(data, position) {
+    const { subInputs } = this.state;
+    console.log(data, position);
+    this.setState({
+      subInputs: [
+        ...subInputs.slice(0, position),
+        data,
+        ...subInputs.slice(position + 1, subInputs.length)
+      ]
+    });
+  }
+
+  sendStateUp(data, position) {
+    // console.log(data);
+    this.props.onUpdate(data, position);
+    // this.props.onUpdate(`${this.props.position}.subinputs: ${data.length}`);
   }
 
   addSubInput() {
@@ -44,27 +52,34 @@ export default class InputGroup extends Component {
       key = 1;
     }
     this.setState({
-      subInputs: [...this.state.subInputs, { ...dataModel, key }]
+      subInputs: [...subInputs, { ...dataModel, key }]
     });
+    this.sendStateUp(this.state, this.props.position - 1);
+    console.log("added from input");
   }
 
   deleteSubInput(key) {
     this.setState({
       subInputs: deleteItemByKeyValue(this.state.subInputs, key)
     });
+    // this.sendStateUp(this.state.subInputs);
+    // this is not fired from level 0, no sense to send state Up from here?
+    console.log("deleted from input");
   }
 
   render() {
     const { subInputs } = this.state;
-    const inputGroup = subInputs.map((input, i) => (
-      <InputGroup
-        key={input.key}
-        position={`${this.props.position}.${i + 1}`}
-        dataPreset={subInputs[i]}
-        onUpdate={this.updateState}
-        onDelete={this.deleteSubInput}
-      />
-    ));
+    const inputGroup = subInputs
+      ? subInputs.map((input, i) => (
+          <InputGroup
+            key={input.key}
+            position={`${this.props.position}.${i + 1}`}
+            dataPreset={subInputs[i]}
+            onUpdate={this.sendStateUp}
+            onDelete={this.deleteSubInput}
+          />
+        ))
+      : null;
 
     return (
       <fieldset>
