@@ -61,9 +61,9 @@ class App extends Component {
   render() {
     const { subInputs } = this.state;
     const inputGroups = subInputs.length ? (
-      subInputs.map((el, i) => (
+      subInputs.map((input, i) => (
         <InputGroup
-          key={el.key}
+          key={input.key}
           position={i}
           dataPreset={subInputs[i]}
           onUpdate={this.updateState}
