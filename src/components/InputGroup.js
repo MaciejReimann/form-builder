@@ -1,47 +1,43 @@
 import React, { Component } from "react";
 
-import lastItemOf from "../helpers/lastItemOf";
+// import lastItemOf from "../helpers/lastItemOf";
 import QuestionInput from "./QuestionInput";
 
 export default class InputGroup extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      position: 0,
-      uniqueKey: 0,
-      conditionType: "equals",
-      conditionValue: "",
-      question: "",
-      type: "text",
-      subInputs: []
-    };
+    this.state = {};
     this.addSubInput = this.addSubInput.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
+  componentWillMount() {
+    this.setState(this.props.dataPreset);
+  }
+
   onChange(e) {
-    // console.log(this.props.values);
-    const { value, name } = e.target;
-    this.setState({
-      [name]: value
-    });
+    // // console.log(this.props.values);
+    // const { value, name } = e.target;
+    // this.setState({
+    //   [name]: value
+    // });
   }
 
   addSubInput() {
-    this.setState({
-      uniqueKey: this.state.uniqueKey + 1,
-      subInputs: [
-        ...this.state.subInputs,
-        {
-          uniqueKey: this.state.uniqueKey + 1,
-          conditionType: "equals",
-          conditionValue: "",
-          question: "",
-          type: "text",
-          subInputs: []
-        }
-      ]
-    });
+    // this.setState({
+    //   uniqueKey: this.state.uniqueKey + 1,
+    //   subInputs: [
+    //     ...this.state.subInputs,
+    //     {
+    //       uniqueKey: this.state.uniqueKey + 1,
+    //       conditionType: "equals",
+    //       conditionValue: "",
+    //       question: "",
+    //       type: "text",
+    //       subInputs: []
+    //     }
+    //   ]
+    // });
   }
 
   render() {
@@ -71,9 +67,7 @@ export default class InputGroup extends Component {
           <InputGroup key={this.state.uniqueKey} />
         ))} */}
         <button onClick={this.addSubInput}>Add Sub-Input</button>
-        <button
-          onClick={() => this.props.onDelete(this.props.values.uniqueKey)}
-        >
+        <button onClick={() => this.props.onDelete(this.state.key)}>
           Delete This
         </button>
       </fieldset>

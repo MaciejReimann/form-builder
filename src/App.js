@@ -5,6 +5,7 @@ import InputGroup from "./components/InputGroup";
 import Welcome from "./components/Welcome";
 
 import lastItemOf from "./helpers/lastItemOf";
+import deleteItemByKeyValue from "./helpers/deleteItemByKeyValue";
 
 const dataModel = {
   conditionType: "equals",
@@ -52,18 +53,9 @@ class App extends Component {
   }
 
   deleteInput(key) {
-    // const { subInputs } = this.state;
-    // const deletedElementIndex = subInputs.indexOf(
-    //   ...subInputs.filter(input => key === input.uniqueKey)
-    // );
-    // this.setState({
-    //   subInputs: [
-    //     ...subInputs.slice(0, deletedElementIndex),
-    //     ...subInputs.slice(deletedElementIndex + 1, subInputs.length)
-    //   ].map((input, i) => {
-    //     return { ...input, position: i };
-    //   })
-    // });
+    this.setState({
+      subInputs: deleteItemByKeyValue(this.state.subInputs, key)
+    });
   }
 
   render() {
@@ -73,6 +65,7 @@ class App extends Component {
         <InputGroup
           key={el.key}
           position={i}
+          dataPreset={subInputs[i]}
           onUpdate={this.updateState}
           onDelete={this.deleteInput}
         />
