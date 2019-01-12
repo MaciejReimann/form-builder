@@ -4,9 +4,8 @@ import InputGroup from "./InputGroup";
 import Welcome from "./Welcome";
 
 import lastItemOf from "../helpers/lastItemOf";
-import deleteItemByKeyValue from "../helpers/deleteItemByKeyValue";
-
-import dataModel from "../dataModel";
+import deleteItemById from "../helpers/deleteItemById";
+// import replaceItem from "../helpers/replaceItem";
 
 export default class FormBuilder extends Component {
   constructor(props) {
@@ -14,40 +13,45 @@ export default class FormBuilder extends Component {
     this.state = {
       subInputs: []
     };
-    this.addInput = this.addInput.bind(this);
-    this.deleteInput = this.deleteInput.bind(this);
+    this.addSubInputId = this.addSubInputId.bind(this);
+    this.deleteSubInput = this.deleteSubInput.bind(this);
+    this.updateSubInput = this.updateSubInput.bind(this);
   }
 
-  addInput() {
+  addSubInputId() {
     const { subInputs } = this.state;
-    // Assign value to key if different than default
-    let key;
-    if (subInputs.length) {
-      key = lastItemOf(subInputs).key + 1;
-    } else {
-      key = 1;
-    }
+    const nextId = subInputs.length ? lastItemOf(subInputs).id + 1 : 1;
     this.setState({
-      subInputs: [...this.state.subInputs, { ...dataModel, key }]
+      subInputs: [...subInputs, { id: nextId }]
     });
   }
 
-  deleteInput(key) {
+  deleteSubInput(id) {
     this.setState({
-      subInputs: deleteItemByKeyValue(this.state.subInputs, key)
+      subInputs: deleteItemById(this.state.subInputs, id)
+    });
+  }
+
+  updateSubInput(subInput) {
+    console.log(subInput);
+    this.setState({
+      subInputs: [
+        ...deleteItemById(this.state.subInputs, subInput.id),
+        subInput
+      ]
     });
   }
 
   render() {
     const { subInputs } = this.state;
     const inputGroups = subInputs.length ? (
-      subInputs.map((input, i) => (
+      subInputs.map((subInput, i) => (
         <InputGroup
-          key={input.key}
+          key={subInput.id}
+          id={subInput.id}
           position={i + 1}
-          dataPreset={subInputs[i]}
-          onUpdate={this.updateState}
-          onDelete={this.deleteInput}
+          onUpdate={this.updateSubInput}
+          onDelete={this.deleteSubInput}
         />
       ))
     ) : (
@@ -57,7 +61,7 @@ export default class FormBuilder extends Component {
       <fieldset>
         <legend>Form Builder</legend>
         {inputGroups}
-        <button onClick={this.addInput}>Add Input</button>
+        <button onClick={this.addSubInputId}>Add Input</button>
       </fieldset>
     );
   }

@@ -3,84 +3,55 @@ import React, { Component } from "react";
 import QuestionInput from "./QuestionInput";
 
 import lastItemOf from "../helpers/lastItemOf";
-import deleteItemByKeyValue from "../helpers/deleteItemByKeyValue";
-
-import dataModel from "../dataModel";
+import deleteItemById from "../helpers/deleteItemById";
 
 export default class InputGroup extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
-    this.addSubInput = this.addSubInput.bind(this);
+    this.state = {
+      id: this.props.id,
+      conditionType: "equals",
+      conditionValue: "",
+      question: "",
+      type: "text",
+      subInputs: []
+    };
+    this.addSubInputId = this.addSubInputId.bind(this);
     this.deleteSubInput = this.deleteSubInput.bind(this);
-    this.sendStateUp = this.sendStateUp.bind(this);
+    this.updateSubInput = this.updateSubInput.bind(this);
   }
 
-  componentDidMount() {
-    this.setState(this.props.dataPreset);
-  }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   this.sendStateUp(this.state);
-  // }
-
-  updateState(data, position) {
+  addSubInputId() {
     const { subInputs } = this.state;
-    console.log(data, position);
+    const nextId = subInputs.length ? lastItemOf(subInputs).id + 1 : 1;
+    this.setState({
+      subInputs: [...subInputs, { id: nextId }]
+    });
+    this.props.onUpdate(this.state);
+  }
+
+  deleteSubInput(id) {
+    this.setState({
+      subInputs: deleteItemById(this.state.subInputs, id)
+    });
+  }
+
+  updateSubInput(subInput) {
     this.setState({
       subInputs: [
-        ...subInputs.slice(0, position),
-        data,
-        ...subInputs.slice(position + 1, subInputs.length)
+        ...deleteItemById(this.state.subInputs, subInput.id),
+        subInput
       ]
     });
   }
 
-  sendStateUp(data, position) {
-    // console.log(data);
-    this.props.onUpdate(data, position);
-    // this.props.onUpdate(`${this.props.position}.subinputs: ${data.length}`);
-  }
-
-  addSubInput() {
-    const { subInputs } = this.state;
-    // Assign value to key if different than default
-    let key;
-    if (subInputs.length) {
-      key = lastItemOf(subInputs).key + 1;
-    } else {
-      key = 1;
-    }
-    this.setState({
-      subInputs: [...subInputs, { ...dataModel, key }]
-    });
-    this.sendStateUp(this.state, this.props.position - 1);
-    console.log("added from input");
-  }
-
-  deleteSubInput(key) {
-    this.setState({
-      subInputs: deleteItemByKeyValue(this.state.subInputs, key)
-    });
-    // this.sendStateUp(this.state.subInputs);
-    // this is not fired from level 0, no sense to send state Up from here?
-    console.log("deleted from input");
-  }
+  // componentDidMount() {
+  //   console.log("mounted", this.state);
+  //   this.props.onUpdate(this.state);
+  // }
 
   render() {
     const { subInputs } = this.state;
-    const inputGroup = subInputs
-      ? subInputs.map((input, i) => (
-          <InputGroup
-            key={input.key}
-            position={`${this.props.position}.${i + 1}`}
-            dataPreset={subInputs[i]}
-            onUpdate={this.sendStateUp}
-            onDelete={this.deleteSubInput}
-          />
-        ))
-      : null;
-
     return (
       <fieldset>
         <legend>Question no: {this.props.position}</legend>
@@ -103,9 +74,17 @@ export default class InputGroup extends Component {
             <option>Number</option>
           </select>
         </p>
-        {inputGroup}
-        <button onClick={this.addSubInput}>Add Sub-Input</button>
-        <button onClick={() => this.props.onDelete(this.state.key)}>
+        {subInputs.map((subInput, i) => (
+          <InputGroup
+            key={subInput.id}
+            id={subInput.id}
+            position={`${this.props.position}.${i + 1}`}
+            onUpdate={this.updateSubInput}
+            onDelete={this.deleteSubInput}
+          />
+        ))}
+        <button onClick={this.addSubInputId}>Add Sub-Input</button>
+        <button onClick={() => this.props.onDelete(this.state.id)}>
           Delete This
         </button>
       </fieldset>

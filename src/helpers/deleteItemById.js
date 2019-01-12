@@ -1,6 +1,6 @@
-export default function(array, key) {
+export default function(array, id) {
   const indexOfInputToBeDeleted = array.indexOf(
-    ...array.filter(items => key === items.key)
+    ...array.filter(items => id === items.id)
   );
   return [
     ...array.slice(0, indexOfInputToBeDeleted),
