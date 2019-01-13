@@ -19,6 +19,7 @@ export default class InputGroup extends Component {
     this.addSubInputId = this.addSubInputId.bind(this);
     this.deleteSubInput = this.deleteSubInput.bind(this);
     this.updateSubInput = this.updateSubInput.bind(this);
+    this.changeValues = this.changeValues.bind(this);
   }
 
   addSubInputId() {
@@ -45,6 +46,21 @@ export default class InputGroup extends Component {
     this.props.onUpdate(this.state);
   }
 
+  changeValues(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const hasInputValuesChanged = Object.values(prevState).some(
+      (value, i) => value !== Object.values(this.state)[i]
+    );
+    if (hasInputValuesChanged) {
+      this.props.onUpdate(this.state);
+    }
+  }
+
   componentDidMount() {
     this.props.onUpdate(this.state);
   }
@@ -64,7 +80,10 @@ export default class InputGroup extends Component {
             <option>No</option>
           </select>
         </p>
-        <QuestionInput />
+        <QuestionInput
+          onChange={e => this.changeValues(e)}
+          value={this.state.question}
+        />
         <p>
           <label>Type:</label>
           <select>
