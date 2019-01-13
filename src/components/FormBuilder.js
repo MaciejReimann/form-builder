@@ -5,7 +5,6 @@ import Welcome from "./Welcome";
 
 import lastItemOf from "../helpers/lastItemOf";
 import deleteItemById from "../helpers/deleteItemById";
-// import replaceItem from "../helpers/replaceItem";
 
 export default class FormBuilder extends Component {
   constructor(props) {
@@ -47,7 +46,7 @@ export default class FormBuilder extends Component {
     const inputGroups = subInputs.length ? (
       subInputs.map((subInput, i) => (
         <InputGroup
-          key={subInput.id}
+          key={i + 1}
           id={subInput.id}
           position={i + 1}
           onUpdate={this.updateSubInput}

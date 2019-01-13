@@ -27,7 +27,6 @@ export default class InputGroup extends Component {
     this.setState({
       subInputs: [...subInputs, { id: nextId }]
     });
-    this.props.onUpdate(this.state);
   }
 
   deleteSubInput(id) {
@@ -43,12 +42,12 @@ export default class InputGroup extends Component {
         subInput
       ]
     });
+    this.props.onUpdate(this.state);
   }
 
-  // componentDidMount() {
-  //   console.log("mounted", this.state);
-  //   this.props.onUpdate(this.state);
-  // }
+  componentDidMount() {
+    this.props.onUpdate(this.state);
+  }
 
   render() {
     const { subInputs } = this.state;
@@ -58,7 +57,7 @@ export default class InputGroup extends Component {
         <p>
           <label>Conditon:</label>
           <select>
-            <option>Equals</option>
+            ;<option>Equals</option>
           </select>
           <select>
             <option>Yes</option>
