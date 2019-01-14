@@ -32,13 +32,21 @@ export default class FormBuilder extends Component {
   }
 
   updateSubInput(subInput) {
-    console.log(subInput);
     this.setState({
       subInputs: [
         ...deleteItemById(this.state.subInputs, subInput.id),
         subInput
       ]
     });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const hasInputValuesChanged = Object.values(prevState).some(
+      (value, i) => value !== Object.values(this.state)[i]
+    );
+    if (hasInputValuesChanged) {
+      this.props.onUpdate(this.state);
+    }
   }
 
   render() {
