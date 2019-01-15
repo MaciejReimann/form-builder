@@ -14,17 +14,20 @@ export default class App extends Component {
   }
 
   render() {
-    const { builderView } = this.state;
+    const { builderView, formData } = this.state;
     return (
       <div className="app">
         <header className="header" />
         <main>
           {builderView ? (
-            <FormBuilder onUpdate={formData => this.setState({ formData })} />
+            <FormBuilder
+              onUpdate={formData =>
+                this.setState({ formData: JSON.stringify(formData) })
+              }
+            />
           ) : (
-            <FormViewer />
+            <FormViewer data={formData} />
           )}
-
           <button onClick={() => this.setState({ builderView: !builderView })}>
             {builderView === true ? "View Form" : "Edit Form"}
           </button>

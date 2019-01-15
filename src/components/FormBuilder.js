@@ -56,7 +56,7 @@ export default class FormBuilder extends Component {
         <InputGroup
           key={i + 1}
           id={subInput.id}
-          position={i + 1}
+          position={`${i + 1}`}
           onUpdate={this.updateSubInput}
           onDelete={this.deleteSubInput}
         />

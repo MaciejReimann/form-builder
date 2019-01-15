@@ -57,7 +57,7 @@ export default class InputGroup extends Component {
       (value, i) => value !== Object.values(this.state)[i]
     );
     if (hasInputValuesChanged) {
-      this.props.onUpdate(this.state);
+      this.props.onUpdate({ ...this.state, position: this.props.position });
     }
   }
 
