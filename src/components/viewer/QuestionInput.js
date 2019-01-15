@@ -1,27 +1,16 @@
-import React, { Component } from "react";
+import React from "react";
 
-export default class QuestionInput extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      answer: ""
-    };
-  }
-  render() {
-    const { question, followingQuestions, number, onAnswer } = this.props;
-    const { answer } = this.state;
-    return (
-      <fieldset>
-        <legend>Question: {number}</legend>
-        <label>{question}</label>
-        <input
-          type="text"
-          value={answer}
-          onChange={e => this.setState({ answer: e.target.value })}
-        />
-        <button onClick={onAnswer}>Submit</button>
-        {followingQuestions}
-      </fieldset>
-    );
-  }
+export default function QuestionInput({ number, question, answer, onChange }) {
+  return (
+    <fieldset>
+      <legend>Question: {number}</legend>
+      <label>{question}</label>
+      <input
+        type="text"
+        value={answer}
+        onChange={e => onChange(e.target.value)}
+      />
+      {/* <button onClick={onAnswer}>Submit</button> */}
+    </fieldset>
+  );
 }

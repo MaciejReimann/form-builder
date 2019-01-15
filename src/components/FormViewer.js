@@ -11,24 +11,16 @@ export default class FormViewer extends Component {
     super(props);
     this.state = {
       currentPosition: "1",
+      answer: "",
       example:
         '{"subInputs":[{"id":1,"conditionType":"equals","conditionValue":"","question":"Do you have a car?","type":"text","subInputs":[{"id":1,"conditionType":"equals","conditionValue":"","question":"What color?","type":"text","subInputs":[{"id":1,"conditionType":"equals","conditionValue":"","question":"Do you like white?","type":"text","subInputs":[],"position":"1.1.1"}],"position":"1.1"}],"position":"1"},{"id":2,"conditionType":"equals","conditionValue":"","question":"Do you have a dog?","type":"text","subInputs":[{"id":1,"conditionType":"equals","conditionValue":"","question":"What breed?","type":"text","subInputs":[],"position":"2.1"}],"position":"2"}]}'
     };
-    // this.update = this.update.bind(this);
-    // this.logExemplaryData = this.logExemplaryData.bind(this);
+    this.next = this.next.bind(this);
   }
 
-  //   update() {
-  //     const q = findItemByPosition(
-  //       JSON.parse(this.state.example).subInputs,
-  //       "1.1"
-  //     );
-  //     console.log(q);
-  //   }
-
-  logExemplaryData() {
-    // const topLevelQuestions = JSON.parse(this.props.data).subInputs;
-    // console.log(this.props.data);
+  next(e) {
+    e.preventDefault();
+    console.log("next");
   }
 
   render() {
@@ -37,8 +29,18 @@ export default class FormViewer extends Component {
     const currentQuestionData = findItemByPosition(data, currentPosition);
     const { id, position, question } = currentQuestionData;
     const currentQuestion = (
-      <QuestionInput key={id} number={position} question={question} />
+      <QuestionInput
+        key={id}
+        number={position}
+        question={question}
+        answer={this.state.answer}
+        onChange={answer => this.setState({ answer })}
+      />
     );
-    return <div> This is From Viewer: {currentQuestion}</div>;
+    return (
+      <form onSubmit={e => this.next(e)}>
+        This is From Viewer: {currentQuestion}
+      </form>
+    );
   }
 }
