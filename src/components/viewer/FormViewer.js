@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import QuestionInput from "./QuestionInput";
+import Goodbye from "./Goodbye";
 
 import findItemByPosition from "../../helpers/findItemByPosition";
 import nextOnDeeperLevel from "../../helpers/nextOnDeeperLevel";
@@ -15,17 +16,20 @@ export default class FormViewer extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      finished: false,
       currentPosition: "1",
       answer: "",
       example:
-        '{"subInputs":[{"id":1,"conditionType":"equals","conditionValue":"","question":"Do you have a license?","type":"text","subInputs":[],"position":"1"},{"id":3,"conditionType":"equals","conditionValue":"","question":"Do you have family?","type":"text","subInputs":[],"position":"3"},{"id":2,"conditionType":"equals","conditionValue":"","question":"Do you have a car?","type":"text","subInputs":[{"id":2,"conditionType":"equals","conditionValue":"","question":"What brand?","type":"text","subInputs":[],"position":"2.2"},{"id":1,"conditionType":"equals","conditionValue":"","question":"What color?","type":"text","subInputs":[{"id":1,"conditionType":"equals","conditionValue":"","question":"Do you like white?","type":"text","subInputs":[],"position":"2.2.1"}],"position":"2.2"}],"position":"2"}]}'
+        '{"subInputs":[{"id":1,"conditionType":"equals","conditionValue":"","question":"1?","type":"text","subInputs":[{"id":1,"conditionType":"equals","conditionValue":"","question":"1.1?","type":"text","subInputs":[{"id":1,"conditionType":"equals","conditionValue":"","question":"1.1.1?","type":"text","subInputs":[],"position":"1.1.1"},{"id":2,"conditionType":"equals","conditionValue":"","question":"1.1.2?","type":"text","subInputs":[],"position":"1.1.2"}],"position":"1.1"}],"position":"1"},{"id":2,"conditionType":"equals","conditionValue":"","question":"2?","type":"text","subInputs":[{"id":1,"conditionType":"equals","conditionValue":"","question":"2.1?","type":"text","subInputs":[],"position":"2.1"},{"id":2,"conditionType":"equals","conditionValue":"","question":"2.2?","type":"text","subInputs":[{"id":1,"conditionType":"equals","conditionValue":"","question":"2.2.1?","type":"text","subInputs":[],"position":"2.2.1"}],"position":"2.2"}],"position":"2"},{"id":3,"conditionType":"equals","conditionValue":"","question":"3?","type":"text","subInputs":[],"position":"3"}]}'
     };
-    this.next = this.next.bind(this);
+    this.submit = this.submit.bind(this);
+  }
+  submit(e) {
+    e.preventDefault();
+    this.next();
   }
 
-  next(e) {
-    e.preventDefault();
-
+  next() {
     let nextPosition;
     const { position, subInputs } = this.getCurrentQuestionData(
       this.state.currentPosition
@@ -39,7 +43,8 @@ export default class FormViewer extends Component {
     } else if (canGoFurther) {
       nextPosition = nextOnTheSameLevel(position);
     } else {
-      console.log("going up");
+      nextPosition = position;
+      this.setState({ finished: true });
     }
 
     this.setState({ currentPosition: nextPosition });
@@ -51,24 +56,25 @@ export default class FormViewer extends Component {
   }
 
   render() {
+    const { finished, currentPosition } = this.state;
     const { id, position, question, subInputs } = this.getCurrentQuestionData(
-      this.state.currentPosition
+      currentPosition
     );
     const currentQuestion = (
       <QuestionInput
         key={id}
-        number={position}
+        position={position}
         question={question}
         answer={this.state.answer}
         onChange={answer => this.setState({ answer })}
-        onSubmit={this.next}
+        onSubmit={this.submit}
         followups={subInputs}
       />
     );
     return (
-      <form onSubmit={e => this.next(e)}>
+      <form onSubmit={e => this.submit(e)}>
         This is From Viewer:
-        {currentQuestion}
+        {finished ? <Goodbye /> : currentQuestion}
       </form>
     );
   }
