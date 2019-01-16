@@ -6,11 +6,7 @@ import Goodbye from "./Goodbye";
 import findItemByPosition from "../../helpers/findItemByPosition";
 import nextOnDeeperLevel from "../../helpers/nextOnDeeperLevel";
 import nextOnTheSameLevel from "../../helpers/nextOnTheSameLevel";
-
-// import shallowIndex from "../helpers/shallowIndex";
-
-// import InputGroup from "./InputGroup";
-// import InputGroup from "./InputGroup";
+import nextOnShallowerLevel from "../../helpers/nextOnShallowerLevel";
 
 export default class FormViewer extends Component {
   constructor(props) {
@@ -37,16 +33,19 @@ export default class FormViewer extends Component {
     const canGoDeeper = subInputs.length > 0;
     const canGoFurther =
       this.getCurrentQuestionData(nextOnTheSameLevel(position)) !== undefined;
+    const canGoShallower =
+      this.getCurrentQuestionData(nextOnShallowerLevel(position)) !== undefined;
 
     if (canGoDeeper) {
       nextPosition = nextOnDeeperLevel(position);
     } else if (canGoFurther) {
       nextPosition = nextOnTheSameLevel(position);
+    } else if (canGoShallower) {
+      nextPosition = nextOnShallowerLevel(position);
     } else {
       nextPosition = position;
       this.setState({ finished: true });
     }
-
     this.setState({ currentPosition: nextPosition });
   }
 
