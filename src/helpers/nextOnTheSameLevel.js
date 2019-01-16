@@ -1,23 +1,11 @@
+import getStringPartAfterChar from "./getStringPartAfterChar";
+import getStringPartBeforeChar from "./getStringPartBeforeChar";
+
+const getStringPartBeforeLastPoint = str => getStringPartBeforeChar(str, ".");
+const getStringPartAfterLastPoint = str => getStringPartAfterChar(str, ".");
+
 export default function(str) {
-  const pointPosition =
-    str.length -
-    str
-      .split("")
-      .reverse()
-      .indexOf(".");
-  if (pointPosition > str.length) {
-    return (parseInt(str) + 1).toString();
-  } else {
-    const lastNumericValue = parseInt(
-      str
-        .split("")
-        .slice(pointPosition, str.length)
-        .join("")
-    );
-    return str
-      .split("")
-      .slice(0, pointPosition)
-      .join("")
-      .concat(lastNumericValue + 1);
-  }
+  const base = getStringPartBeforeLastPoint(str);
+  const value = parseInt(getStringPartAfterLastPoint(str)) + 1;
+  return isNaN(value) ? `${parseInt(base) + 1}` : `${base}.${value}`;
 }

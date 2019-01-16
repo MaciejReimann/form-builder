@@ -1,7 +1,7 @@
-export default function cutStringBefore(str, char) {
+export default function getStringPartAfterChar(str, char) {
   let charPosition;
   if (str.indexOf(char) === -1) {
-    return str;
+    return "";
   } else {
     charPosition =
       str.length -

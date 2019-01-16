@@ -1,4 +1,4 @@
-export default function cutStringOffAfter(str, char) {
+export default function getStringPartBeforeChar(str, char) {
   let charPosition;
   if (str.indexOf(char) === -1) {
     return str;
