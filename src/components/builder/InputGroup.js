@@ -94,7 +94,7 @@ export default class InputGroup extends Component {
         </p>
         {subInputs.map((subInput, i) => (
           <InputGroup
-            key={subInput.id}
+            key={i + 1}
             id={subInput.id}
             position={`${this.props.position}.${i + 1}`}
             onUpdate={this.updateSubInput}
