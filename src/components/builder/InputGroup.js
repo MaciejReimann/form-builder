@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
-import QuestionInput from "./QuestionInput";
+import QuestionTextInput from "../QuestionTextInput";
 
-import lastItemOf from "../helpers/lastItemOf";
-import deleteItemById from "../helpers/deleteItemById";
+import lastItemOf from "../../helpers/lastItemOf";
+import deleteItemById from "../../helpers/deleteItemById";
 
 export default class InputGroup extends Component {
   constructor(props) {
@@ -73,14 +73,14 @@ export default class InputGroup extends Component {
         <p>
           <label>Conditon:</label>
           <select>
-            ;<option>Equals</option>
+            <option>Equals</option>
           </select>
           <select>
             <option>Yes</option>
             <option>No</option>
           </select>
         </p>
-        <QuestionInput
+        <QuestionTextInput
           onChange={e => this.changeValues(e)}
           value={this.state.question}
         />

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "./app.css";
 
-import FormBuilder from "./components/FormBuilder";
-import FormViewer from "./components/FormViewer";
+import FormBuilder from "./components/builder/FormBuilder";
+import FormViewer from "./components/viewer/FormViewer";
 
 export default class App extends Component {
   constructor(props) {

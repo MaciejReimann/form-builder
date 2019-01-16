@@ -1,9 +1,14 @@
 import React from "react";
 
-export default function QuestionInput({ number, question, answer, onChange }) {
+export default function QuestionInput({
+  position,
+  question,
+  answer,
+  onChange
+}) {
   return (
     <fieldset>
-      <legend>Question: {number}</legend>
+      <legend>Question: {position}</legend>
       <label>{question}</label>
       <input
         type="text"

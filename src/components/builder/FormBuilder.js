@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import InputGroup from "./InputGroup";
 import Welcome from "./Welcome";
 
-import lastItemOf from "../helpers/lastItemOf";
-import deleteItemById from "../helpers/deleteItemById";
+import lastItemOf from "../../helpers/lastItemOf";
+import deleteItemById from "../../helpers/deleteItemById";
 
 export default class FormBuilder extends Component {
   constructor(props) {
