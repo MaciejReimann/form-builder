@@ -4,6 +4,7 @@ export default function QuestionInput({
   position,
   question,
   answer,
+  warning,
   onChange
 }) {
   return (
@@ -16,6 +17,7 @@ export default function QuestionInput({
         onChange={e => onChange(e.target.value)}
       />
       {/* <button onClick={onAnswer}>Submit</button> */}
+      <p className="warning">{warning ? warning : null}</p>
     </fieldset>
   );
 }

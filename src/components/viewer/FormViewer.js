@@ -14,7 +14,7 @@ export default class FormViewer extends Component {
     super(props);
     this.state = {
       noMoreQuestions: false,
-      answerIsValid: true,
+      answerMeetsCondition: true,
       position: "1",
       answer: "",
       example:
@@ -24,13 +24,13 @@ export default class FormViewer extends Component {
   }
   submit(e) {
     e.preventDefault();
-    const { answer, position } = this.state;
+    const { answer } = this.state;
     const { conditionType, conditionValue } = this.getCurrentQuestionData();
 
     if (doesAnswerMeetCondition(answer)) {
       this.next();
     } else {
-      this.setState({ answerIsValid: false });
+      this.setState({ answerMeetsCondition: false });
     }
   }
 
@@ -69,8 +69,11 @@ export default class FormViewer extends Component {
   }
 
   render() {
-    const { noMoreQuestions, position } = this.state;
+    const { noMoreQuestions, answerMeetsCondition } = this.state;
     const current = this.getCurrentQuestionData();
+    const warning = answerMeetsCondition
+      ? null
+      : "Sorry, your answer doesn't allow me to show you more questions";
     return (
       <form onSubmit={e => this.submit(e)}>
         This is From Viewer:
@@ -82,9 +85,9 @@ export default class FormViewer extends Component {
             position={current.position}
             question={current.question}
             answer={this.state.answer}
+            warning={warning}
             onChange={answer => this.setState({ answer })}
             onSubmit={this.submit}
-            followups={current.subInputs}
           />
         )}
       </form>
