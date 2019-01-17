@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./app.css";
+import "./styles/app.css";
 
 import FormBuilder from "./components/builder/FormBuilder";
 import FormViewer from "./components/viewer/FormViewer";
@@ -17,8 +17,10 @@ export default class App extends Component {
     const { builderView, formData } = this.state;
     return (
       <div className="app">
+        <div className="switch">Switch</div>
         <header className="header" />
-        <main>
+        <aside className="side">Side</aside>
+        <main className="main">
           {builderView ? (
             <FormBuilder
               onUpdate={formData =>
@@ -32,6 +34,7 @@ export default class App extends Component {
             {builderView === true ? "View Form" : "Edit Form"}
           </button>
         </main>
+        <footer className="footer" />
       </div>
     );
   }
