@@ -22,6 +22,13 @@ export default class FormViewer extends Component {
     };
     this.submit = this.submit.bind(this);
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevState.answerMeetsCondition) {
+      this.setState({ answerMeetsCondition: true });
+    }
+  }
+
   submit(e) {
     e.preventDefault();
     const { answer } = this.state;
