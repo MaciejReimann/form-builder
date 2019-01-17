@@ -1,4 +1,4 @@
-import React, { Component, isValidElement } from "react";
+import React, { Component } from "react";
 
 import QuestionInput from "./QuestionInput";
 import Goodbye from "./Goodbye";
