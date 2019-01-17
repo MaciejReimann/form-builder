@@ -5,6 +5,7 @@ describe("Test strings consisting of numerical values interspersed with a '.' ",
     expect(nextOnShallowerLevel("0.1")).toEqual("1");
     expect(nextOnShallowerLevel("0.1.1")).toEqual("0.2");
     expect(nextOnShallowerLevel("0.9.1")).toEqual("0.10");
+    expect(nextOnShallowerLevel("1.2")).toEqual("2");
   });
   it("Returns an empty string if no '.' is present ", () => {
     expect(nextOnShallowerLevel("0")).toEqual("");

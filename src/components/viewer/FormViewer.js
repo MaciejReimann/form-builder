@@ -12,7 +12,7 @@ export default class FormViewer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      finished: false,
+      noMoreQuestions: false,
       currentPosition: "1",
       answer: "",
       example:
@@ -25,28 +25,32 @@ export default class FormViewer extends Component {
     this.next();
   }
 
-  next() {
-    let nextPosition;
-    const { position, subInputs } = this.getCurrentQuestionData(
-      this.state.currentPosition
-    );
-    const canGoDeeper = subInputs.length > 0;
-    const canGoFurther =
-      this.getCurrentQuestionData(nextOnTheSameLevel(position)) !== undefined;
-    const canGoShallower =
-      this.getCurrentQuestionData(nextOnShallowerLevel(position)) !== undefined;
-
-    if (canGoDeeper) {
-      nextPosition = nextOnDeeperLevel(position);
-    } else if (canGoFurther) {
-      nextPosition = nextOnTheSameLevel(position);
-    } else if (canGoShallower) {
-      nextPosition = nextOnShallowerLevel(position);
-    } else {
-      nextPosition = position;
-      this.setState({ finished: true });
+  componentDidUpdate(prevProps, prevState) {
+    const { currentPosition, noMoreQuestions } = this.state;
+    if (!this.getCurrentQuestionData(currentPosition) && !noMoreQuestions) {
+      this.setState({ currentPosition: nextOnShallowerLevel(currentPosition) });
     }
-    this.setState({ currentPosition: nextPosition });
+    if (currentPosition === "" && !noMoreQuestions) {
+      console.log("prev:", prevState.currentPosition);
+      console.log("cur:", currentPosition);
+      this.setState({ noMoreQuestions: true });
+    }
+  }
+
+  next() {
+    const position = this.state.currentPosition;
+    const can = n => this.getCurrentQuestionData(n) !== undefined;
+    const goDeeper = nextOnDeeperLevel(position);
+    const goFurther = nextOnTheSameLevel(position);
+    const goShallower = nextOnShallowerLevel(position);
+
+    if (can(goDeeper)) {
+      this.setState({ currentPosition: goDeeper });
+    } else if (can(goFurther)) {
+      this.setState({ currentPosition: goFurther });
+    } else {
+      this.setState({ currentPosition: goShallower });
+    }
   }
 
   getCurrentQuestionData(pos) {
@@ -55,25 +59,25 @@ export default class FormViewer extends Component {
   }
 
   render() {
-    const { finished, currentPosition } = this.state;
-    const { id, position, question, subInputs } = this.getCurrentQuestionData(
-      currentPosition
-    );
-    const currentQuestion = (
+    const { noMoreQuestions, currentPosition } = this.state;
+    const current = this.getCurrentQuestionData(currentPosition);
+    const askQuestionOrSayGoodbye = noMoreQuestions ? (
+      <Goodbye />
+    ) : current ? (
       <QuestionInput
-        key={id}
-        position={position}
-        question={question}
+        key={current.id}
+        position={current.position}
+        question={current.question}
         answer={this.state.answer}
         onChange={answer => this.setState({ answer })}
         onSubmit={this.submit}
-        followups={subInputs}
+        followups={current.subInputs}
       />
-    );
+    ) : null;
     return (
       <form onSubmit={e => this.submit(e)}>
         This is From Viewer:
-        {finished ? <Goodbye /> : currentQuestion}
+        {askQuestionOrSayGoodbye}
       </form>
     );
   }
