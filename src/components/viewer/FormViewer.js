@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, isValidElement } from "react";
 
 import QuestionInput from "./QuestionInput";
 import Goodbye from "./Goodbye";
 
+import doesAnswerMeetCondition from "../../helpers/doesAnswerMeetCondition";
 import findItemByPosition from "../../helpers/findItemByPosition";
 import nextOnDeeperLevel from "../../helpers/nextOnDeeperLevel";
 import nextOnTheSameLevel from "../../helpers/nextOnTheSameLevel";
@@ -13,6 +14,7 @@ export default class FormViewer extends Component {
     super(props);
     this.state = {
       noMoreQuestions: false,
+      answerIsValid: true,
       position: "1",
       answer: "",
       example:
@@ -22,12 +24,19 @@ export default class FormViewer extends Component {
   }
   submit(e) {
     e.preventDefault();
-    this.next();
+    const { answer, position } = this.state;
+    const { conditionType, conditionValue } = this.getCurrentQuestionData();
+
+    if (doesAnswerMeetCondition(answer)) {
+      this.next();
+    } else {
+      this.setState({ answerIsValid: false });
+    }
   }
 
   next() {
     const { position, noMoreQuestions } = this.state;
-    const can = n => this.getCurrentQuestionData(n);
+    const can = n => this.getQuestionData(n);
     const goDeeper = nextOnDeeperLevel(position);
     const goFurther = nextOnTheSameLevel(position);
     const goShallower = pos => {
@@ -50,14 +59,18 @@ export default class FormViewer extends Component {
     }
   }
 
-  getCurrentQuestionData(pos) {
+  getQuestionData(pos) {
     const data = JSON.parse(this.state.example).subInputs;
     return findItemByPosition(data, pos);
   }
 
+  getCurrentQuestionData() {
+    return this.getQuestionData(this.state.position);
+  }
+
   render() {
     const { noMoreQuestions, position } = this.state;
-    const current = this.getCurrentQuestionData(position);
+    const current = this.getCurrentQuestionData();
     return (
       <form onSubmit={e => this.submit(e)}>
         This is From Viewer:
