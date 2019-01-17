@@ -27,7 +27,7 @@ export default class FormViewer extends Component {
     const { answer } = this.state;
     const { conditionType, conditionValue } = this.getCurrentQuestionData();
 
-    if (doesAnswerMeetCondition(answer)) {
+    if (doesAnswerMeetCondition(answer, conditionType, conditionValue)) {
       this.next();
     } else {
       this.setState({ answerMeetsCondition: false });
