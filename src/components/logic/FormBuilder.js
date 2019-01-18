@@ -5,6 +5,7 @@ import Welcome from "./Welcome";
 
 import lastItemOf from "../../helpers/lastItemOf";
 import deleteItemById from "../../helpers/deleteItemById";
+import hasObjectValuesChanged from "../../helpers/hasObjectValuesChanged";
 
 export default class FormBuilder extends Component {
   constructor(props) {
@@ -40,10 +41,7 @@ export default class FormBuilder extends Component {
     });
 
   componentDidUpdate(prevProps, prevState) {
-    const hasInputValuesChanged = Object.values(prevState).some(
-      (value, i) => value !== Object.values(this.state)[i]
-    );
-    if (hasInputValuesChanged) {
+    if (hasObjectValuesChanged(prevState, this.state)) {
       this.props.onUpdate(this.state);
     }
   }
