@@ -1,6 +1,6 @@
 import React from "react";
 
-export default () => {
+export default function SideBar() {
   return (
     <aside className="side">
       <ul>
@@ -9,4 +9,4 @@ export default () => {
       </ul>
     </aside>
   );
-};
+}

@@ -26,7 +26,6 @@ export default class App extends Component {
         <Header />
         <SideBar />
         <BuilderViewerContainer builderView={builderView} />
-        <footer className="footer" />
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default ({ onClick, builderView }) => {
+export default function BuilderViewerSwitch({ onClick, builderView }) {
   return (
     <div className="switch">
       <button onClick={onClick}>
@@ -8,4 +8,4 @@ export default ({ onClick, builderView }) => {
       </button>
     </div>
   );
-};
+}
