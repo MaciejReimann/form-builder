@@ -12,33 +12,32 @@ export default class FormBuilder extends Component {
     this.state = {
       subInputs: []
     };
-    this.addSubInputId = this.addSubInputId.bind(this);
-    this.deleteSubInput = this.deleteSubInput.bind(this);
-    this.updateSubInput = this.updateSubInput.bind(this);
   }
 
-  addSubInputId() {
-    const { subInputs } = this.state;
-    const nextId = subInputs.length ? lastItemOf(subInputs).id + 1 : 1;
+  addSubInputId = () =>
     this.setState({
-      subInputs: [...subInputs, { id: nextId }]
+      subInputs: [
+        ...this.state.subInputs,
+        {
+          id: this.state.subInputs.length
+            ? lastItemOf(this.state.subInputs).id + 1
+            : 1
+        }
+      ]
     });
-  }
 
-  deleteSubInput(id) {
+  deleteSubInput = id =>
     this.setState({
       subInputs: deleteItemById(this.state.subInputs, id)
     });
-  }
 
-  updateSubInput(subInput) {
+  updateSubInput = subInput =>
     this.setState({
       subInputs: [
         ...deleteItemById(this.state.subInputs, subInput.id),
         subInput
       ]
     });
-  }
 
   componentDidUpdate(prevProps, prevState) {
     const hasInputValuesChanged = Object.values(prevState).some(
