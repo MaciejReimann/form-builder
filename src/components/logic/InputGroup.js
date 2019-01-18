@@ -4,6 +4,7 @@ import QuestionTextInput from "../QuestionTextInput";
 
 import lastItemOf from "../../helpers/lastItemOf";
 import deleteItemById from "../../helpers/deleteItemById";
+import hasObjectValuesChanged from "../../helpers/hasObjectValuesChanged";
 
 export default class InputGroup extends Component {
   constructor(props) {
@@ -16,27 +17,26 @@ export default class InputGroup extends Component {
       type: "text",
       subInputs: []
     };
-    this.addSubInputId = this.addSubInputId.bind(this);
-    this.deleteSubInput = this.deleteSubInput.bind(this);
-    this.updateSubInput = this.updateSubInput.bind(this);
-    this.changeValues = this.changeValues.bind(this);
   }
 
-  addSubInputId() {
-    const { subInputs } = this.state;
-    const nextId = subInputs.length ? lastItemOf(subInputs).id + 1 : 1;
+  addSubInputId = () =>
     this.setState({
-      subInputs: [...subInputs, { id: nextId }]
+      subInputs: [
+        ...this.state.subInputs,
+        {
+          id: this.state.subInputs.length
+            ? lastItemOf(this.state.subInputs).id + 1
+            : 1
+        }
+      ]
     });
-  }
 
-  deleteSubInput(id) {
+  deleteSubInput = id =>
     this.setState({
       subInputs: deleteItemById(this.state.subInputs, id)
     });
-  }
 
-  updateSubInput(subInput) {
+  updateSubInput = subInput => {
     this.setState({
       subInputs: [
         ...deleteItemById(this.state.subInputs, subInput.id),
@@ -44,19 +44,15 @@ export default class InputGroup extends Component {
       ]
     });
     this.props.onUpdate(this.state);
-  }
+  };
 
-  changeValues(e) {
+  changeValues = ({ name, value }) =>
     this.setState({
-      [e.target.name]: e.target.value
+      [name]: value
     });
-  }
 
   componentDidUpdate(prevProps, prevState) {
-    const hasInputValuesChanged = Object.values(prevState).some(
-      (value, i) => value !== Object.values(this.state)[i]
-    );
-    if (hasInputValuesChanged) {
+    if (hasObjectValuesChanged(prevState, this.state)) {
       this.props.onUpdate({ ...this.state, position: this.props.position });
     }
   }
@@ -81,7 +77,7 @@ export default class InputGroup extends Component {
           </select>
         </p>
         <QuestionTextInput
-          onChange={e => this.changeValues(e)}
+          onChange={e => this.changeValues(e.target)}
           value={this.state.question}
         />
         <p>
