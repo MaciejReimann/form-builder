@@ -78,9 +78,6 @@ export default class FormViewer extends Component {
   render() {
     const { noMoreQuestions, answerMeetsCondition } = this.state;
     const current = this.getCurrentQuestionData();
-    const warning = answerMeetsCondition
-      ? null
-      : "Sorry, your answer doesn't allow me to show you more questions";
     return (
       <form onSubmit={e => this.submit(e)}>
         This is From Viewer:
@@ -92,7 +89,7 @@ export default class FormViewer extends Component {
             position={current.position}
             question={current.question}
             answer={this.state.answer}
-            warning={warning}
+            warning={!answerMeetsCondition}
             onChange={answer => this.setState({ answer })}
             onSubmit={this.submit}
           />
