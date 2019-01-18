@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 
+import InfiniteForm from "../presentation/InfiniteForm";
+
 import InputGroup from "./InputGroup";
 import Welcome from "./Welcome";
 
 import lastItemOf from "../../helpers/lastItemOf";
 import deleteItemById from "../../helpers/deleteItemById";
+import updateItemById from "../../helpers/updateItemById";
 import hasObjectValuesChanged from "../../helpers/hasObjectValuesChanged";
 
 export default class FormBuilder extends Component {
@@ -15,17 +18,15 @@ export default class FormBuilder extends Component {
     };
   }
 
-  addSubInputId = () =>
+  addInputId = () => {
+    const { subInputs } = this.state;
     this.setState({
       subInputs: [
-        ...this.state.subInputs,
-        {
-          id: this.state.subInputs.length
-            ? lastItemOf(this.state.subInputs).id + 1
-            : 1
-        }
+        ...subInputs,
+        { id: subInputs.length ? lastItemOf(subInputs).id + 1 : 1 }
       ]
     });
+  };
 
   deleteSubInput = id =>
     this.setState({
@@ -34,10 +35,7 @@ export default class FormBuilder extends Component {
 
   updateSubInput = subInput =>
     this.setState({
-      subInputs: [
-        ...deleteItemById(this.state.subInputs, subInput.id),
-        subInput
-      ]
+      subInputs: [...updateItemById(this.state.subInputs, subInput)]
     });
 
   componentDidUpdate(prevProps, prevState) {
@@ -51,7 +49,7 @@ export default class FormBuilder extends Component {
     const inputGroups = subInputs.length ? (
       subInputs.map((subInput, i) => (
         <InputGroup
-          key={i + 1}
+          key={subInput.id}
           id={subInput.id}
           position={`${i + 1}`}
           onUpdate={this.updateSubInput}
@@ -61,12 +59,6 @@ export default class FormBuilder extends Component {
     ) : (
       <Welcome />
     );
-    return (
-      <fieldset>
-        <legend>Form Builder</legend>
-        {inputGroups}
-        <button onClick={this.addSubInputId}>Add Input</button>
-      </fieldset>
-    );
+    return <InfiniteForm onAddInput={this.addInputId} inputs={inputGroups} />;
   }
 }

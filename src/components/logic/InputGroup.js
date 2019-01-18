@@ -4,6 +4,7 @@ import QuestionTextInput from "../QuestionTextInput";
 
 import lastItemOf from "../../helpers/lastItemOf";
 import deleteItemById from "../../helpers/deleteItemById";
+import updateItemById from "../../helpers/updateItemById";
 import hasObjectValuesChanged from "../../helpers/hasObjectValuesChanged";
 
 export default class InputGroup extends Component {
@@ -19,17 +20,13 @@ export default class InputGroup extends Component {
     };
   }
 
-  addSubInputId = () =>
+  addSubInputId = () => {
+    const { subInputs } = this.state;
+    const nextId = subInputs.length ? lastItemOf(subInputs).id + 1 : 1;
     this.setState({
-      subInputs: [
-        ...this.state.subInputs,
-        {
-          id: this.state.subInputs.length
-            ? lastItemOf(this.state.subInputs).id + 1
-            : 1
-        }
-      ]
+      subInputs: [...subInputs, { id: nextId }]
     });
+  };
 
   deleteSubInput = id =>
     this.setState({
@@ -38,18 +35,16 @@ export default class InputGroup extends Component {
 
   updateSubInput = subInput => {
     this.setState({
-      subInputs: [
-        ...deleteItemById(this.state.subInputs, subInput.id),
-        subInput
-      ]
+      subInputs: [...updateItemById(this.state.subInputs, subInput)]
     });
     this.props.onUpdate(this.state);
   };
 
-  changeValues = ({ name, value }) =>
+  changeValues = e => {
     this.setState({
-      [name]: value
+      [e.target.name]: e.target.value
     });
+  };
 
   componentDidUpdate(prevProps, prevState) {
     if (hasObjectValuesChanged(prevState, this.state)) {
@@ -65,7 +60,10 @@ export default class InputGroup extends Component {
     const { subInputs } = this.state;
     return (
       <fieldset>
-        <legend>Question no: {this.props.position}</legend>
+        <legend>
+          Question no:
+          {this.props.position}
+        </legend>
         <p>
           <label>Conditon:</label>
           <select>
@@ -77,7 +75,7 @@ export default class InputGroup extends Component {
           </select>
         </p>
         <QuestionTextInput
-          onChange={e => this.changeValues(e.target)}
+          onChange={e => this.changeValues(e)}
           value={this.state.question}
         />
         <p>
@@ -90,7 +88,7 @@ export default class InputGroup extends Component {
         </p>
         {subInputs.map((subInput, i) => (
           <InputGroup
-            key={i + 1}
+            key={subInput.id}
             id={subInput.id}
             position={`${this.props.position}.${i + 1}`}
             onUpdate={this.updateSubInput}
