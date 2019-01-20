@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 
-import InputQuestion from "../presentation/InputQuestion";
-import SelectType from "../presentation/SelectType";
-import SelectCondition from "../presentation/SelectCondition";
+import InputGroup from "../presentation/InputGroup";
 
 import lastItemOf from "../../helpers/lastItemOf";
 import deleteItemById from "../../helpers/deleteItemById";
 import updateItemById from "../../helpers/updateItemById";
 import hasObjectValuesChanged from "../../helpers/hasObjectValuesChanged";
 
-export default class InputGroup extends Component {
+export default class InputGroupContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -44,11 +42,10 @@ export default class InputGroup extends Component {
     this.props.onUpdate(this.state);
   };
 
-  changeValues = e => {
+  changeValues = e =>
     this.setState({
       [e.target.name]: e.target.value
     });
-  };
 
   componentDidUpdate(prevProps, prevState) {
     if (hasObjectValuesChanged(prevState, this.state)) {
@@ -61,39 +58,18 @@ export default class InputGroup extends Component {
   }
 
   render() {
-    const isNotTopLevel = this.props.position.indexOf(".") !== -1;
-    const { subInputs, inputType } = this.state;
     return (
-      <fieldset>
-        <legend>
-          Question no:
-          {this.props.position}
-        </legend>
-        {isNotTopLevel && (
-          <SelectCondition parentInput={this.props.inputType} />
-        )}
-
-        <InputQuestion
-          onChange={e => this.changeValues(e)}
-          value={this.state.question}
-        />
-        <SelectType onChange={this.changeValues} value={inputType} />
-
-        {subInputs.map((subInput, i) => (
-          <InputGroup
-            key={subInput.id}
-            id={subInput.id}
-            inputType={inputType}
-            position={`${this.props.position}.${i + 1}`}
-            onUpdate={this.updateSubInput}
-            onDelete={this.deleteSubInput}
-          />
-        ))}
-        <button onClick={this.addSubInputId}>Add Sub-Input</button>
-        <button onClick={() => this.props.onDelete(this.state.id)}>
-          Delete This
-        </button>
-      </fieldset>
+      <InputGroup
+        isNotTopLevel={this.props.position.indexOf(".") !== -1}
+        parentinputType={this.props.inputType}
+        parentPosition={this.props.position}
+        {...this.state}
+        onChange={e => this.changeValues(e)}
+        onUpdate={this.updateSubInput}
+        onAdd={this.addSubInputId}
+        onDeleteFromContainer={this.deleteSubInput}
+        onDelete={() => this.props.deleteFromParent(this.state.id)}
+      />
     );
   }
 }

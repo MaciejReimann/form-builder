@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import InfiniteForm from "../presentation/InfiniteForm";
 
-import InputGroup from "./InputGroup";
+import InputGroupContainer from "./InputGroupContainer";
 import Welcome from "./Welcome";
 
 import lastItemOf from "../../helpers/lastItemOf";
@@ -48,12 +48,12 @@ export default class FormBuilder extends Component {
     const { subInputs } = this.state;
     const inputGroups = subInputs.length ? (
       subInputs.map((subInput, i) => (
-        <InputGroup
+        <InputGroupContainer
           key={subInput.id}
           id={subInput.id}
           position={`${i + 1}`}
           onUpdate={this.updateSubInput}
-          onDelete={this.deleteSubInput}
+          deleteFromParent={this.deleteSubInput}
         />
       ))
     ) : (
