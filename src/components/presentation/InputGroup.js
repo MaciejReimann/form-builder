@@ -25,10 +25,11 @@ export default function InputGroup({
         Question no:
         {parentPosition}
       </legend>
-      {isNotTopLevel && <SelectCondition parentInput={parentinputType} />}
+      {isNotTopLevel && (
+        <SelectCondition parentInput={parentinputType} onChange={onChange} />
+      )}
       <InputQuestion onChange={onChange} value={question} />
       <SelectType onChange={onChange} value={inputType} />
-
       {subInputs.map((subInput, i) => (
         <InputGroupContainer
           key={subInput.id}

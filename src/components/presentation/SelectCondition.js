@@ -1,27 +1,26 @@
 import React from "react";
 
-export default function SelectCondition({ parentInput, value }) {
-  console.log(parentInput);
+export default function SelectCondition({ parentInput, onChange }) {
   if (parentInput === "Text") {
     return (
       <p>
         <label>Conditon:</label>
-        <select>
-          <option>Equals</option>
+        <select name="conditionType" onChange={onChange} value="Equals">
+          <option value="Equals">Equals</option>
         </select>
-        <input type="text" />
+        <input type="text" name="conditionValue" onChange={onChange} />
       </p>
     );
   } else if (parentInput === "Yes / No") {
     return (
       <p>
         <label>Conditon:</label>
-        <select>
-          <option>Equals</option>
+        <select name="conditionType" onChange={onChange}>
+          <option value="Equals">Equals</option>
         </select>
-        <select>
-          <option>Yes</option>
-          <option>No</option>
+        <select name="conditionValue" onChange={onChange}>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
         </select>
       </p>
     );
@@ -29,12 +28,12 @@ export default function SelectCondition({ parentInput, value }) {
   return (
     <p>
       <label>Conditon:</label>
-      <select>
-        <option>Less Than</option>
-        <option>Equals</option>
-        <option>Greater Than</option>
+      <select name="conditionType" onChange={onChange} value="Equals">
+        <option value="Less Than">Less Than</option>
+        <option value="Equals">Equals</option>
+        <option value="Greater Than">Greater Than</option>
       </select>
-      <input type="text" />
+      <input type="text" name="conditionValue" onChange={onChange} />
     </p>
   );
 }

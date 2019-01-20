@@ -12,7 +12,7 @@ export default class InputGroupContainer extends Component {
     super(props);
     this.state = {
       id: this.props.id,
-      conditionType: "equals",
+      conditionType: "Equals",
       conditionValue: "",
       question: "",
       inputType: "Text",
