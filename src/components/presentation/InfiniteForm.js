@@ -1,6 +1,6 @@
 import React from "react";
 
-export default ({ onAddInput, inputs }) => {
+export default function InfiniteForm({ onAddInput, inputs }) {
   const onSubmit = e => e.preventDefault();
   return (
     <form className="InfiniteForm" onSubmit={onSubmit}>
@@ -13,4 +13,4 @@ export default ({ onAddInput, inputs }) => {
       </fieldset>
     </form>
   );
-};
+}
