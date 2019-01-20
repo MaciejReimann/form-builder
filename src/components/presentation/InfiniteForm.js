@@ -8,7 +8,7 @@ export default function InfiniteForm({ onAddInput, inputs }) {
         <legend>
           <h4>Your New Form</h4>
         </legend>
-        {inputs}
+        {!inputs.length ? <p>"Start working!"</p> : inputs}
         <button onClick={onAddInput}>Click To Add Input</button>
       </fieldset>
     </form>
