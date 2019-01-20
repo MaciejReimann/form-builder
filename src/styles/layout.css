@@ -27,6 +27,11 @@
 
 .main {
   grid-area: main;
+  align-self: stretch;
+}
+
+.InfiniteForm {
+  min-width: 30rem;
 }
 
 .footer {
