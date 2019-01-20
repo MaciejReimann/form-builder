@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 
-import QuestionTextInput from "../QuestionTextInput";
+import InputQuestion from "../presentation/InputQuestion";
+import SelectType from "../presentation/SelectType";
+import SelectCondition from "../presentation/SelectCondition";
 
 import lastItemOf from "../../helpers/lastItemOf";
 import deleteItemById from "../../helpers/deleteItemById";
@@ -15,16 +17,18 @@ export default class InputGroup extends Component {
       conditionType: "equals",
       conditionValue: "",
       question: "",
-      type: "text",
+      inputType: "Text",
       subInputs: []
     };
   }
 
   addSubInputId = () => {
     const { subInputs } = this.state;
-    const nextId = subInputs.length ? lastItemOf(subInputs).id + 1 : 1;
     this.setState({
-      subInputs: [...subInputs, { id: nextId }]
+      subInputs: [
+        ...subInputs,
+        { id: subInputs.length ? lastItemOf(subInputs).id + 1 : 1 }
+      ]
     });
   };
 
@@ -57,39 +61,29 @@ export default class InputGroup extends Component {
   }
 
   render() {
-    const { subInputs } = this.state;
+    const isNotTopLevel = this.props.position.indexOf(".") !== -1;
+    const { subInputs, inputType } = this.state;
     return (
       <fieldset>
         <legend>
           Question no:
           {this.props.position}
         </legend>
-        <p>
-          <label>Conditon:</label>
-          <select>
-            <option>Equals</option>
-          </select>
-          <select>
-            <option>Yes</option>
-            <option>No</option>
-          </select>
-        </p>
-        <QuestionTextInput
+        {isNotTopLevel && (
+          <SelectCondition parentInput={this.props.inputType} />
+        )}
+
+        <InputQuestion
           onChange={e => this.changeValues(e)}
           value={this.state.question}
         />
-        <p>
-          <label>Type:</label>
-          <select>
-            <option>Yes / No</option>
-            <option>Text</option>
-            <option>Number</option>
-          </select>
-        </p>
+        <SelectType onChange={this.changeValues} value={inputType} />
+
         {subInputs.map((subInput, i) => (
           <InputGroup
             key={subInput.id}
             id={subInput.id}
+            inputType={inputType}
             position={`${this.props.position}.${i + 1}`}
             onUpdate={this.updateSubInput}
             onDelete={this.deleteSubInput}
