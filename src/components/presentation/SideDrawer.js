@@ -3,12 +3,14 @@ import classNames from "classnames";
 
 import {
   withStyles,
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton
+  IconButton,
+  Drawer,
+  List,
+  Divider
 } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
+import { ChevronRight, ChevronLeft } from "@material-ui/icons";
+
+import DrawerItems from "./DrawerItems";
 
 const drawerWidth = 240;
 
@@ -77,27 +79,29 @@ const styles = theme => ({
   }
 });
 
-function Header({ isOpen, onIconClick, classes }) {
+function SideDrawer({ isOpen, onIconClick, classes, theme }) {
   return (
-    <AppBar
-      position="absolute"
-      className={classNames(classes.appBar, isOpen && classes.appBarShift)}
+    <Drawer
+      variant="permanent"
+      classes={{
+        paper: classNames(
+          classes.drawerPaper,
+          !isOpen && classes.drawerPaperClose
+        )
+      }}
+      open={isOpen}
     >
-      <Toolbar disableGutters={!isOpen}>
-        <IconButton
-          color="inherit"
-          aria-label="Open drawer"
-          onClick={onIconClick}
-          className={classNames(classes.menuButton, isOpen && classes.hide)}
-        >
-          <MenuIcon />
+      <div className={classes.toolbar}>
+        <IconButton onClick={onIconClick}>
+          {theme.direction === "rtl" ? <ChevronRight /> : <ChevronLeft />}
         </IconButton>
-        <Typography variant="title" color="inherit" noWrap>
-          Form Builder
-        </Typography>
-      </Toolbar>
-    </AppBar>
+      </div>
+      <Divider />
+      <DrawerItems />
+      <Divider />
+      {/* <List>{bottomDrawerItems}</List> */}
+    </Drawer>
   );
 }
 
-export default withStyles(styles, { withTheme: true })(Header);
+export default withStyles(styles, { withTheme: true })(SideDrawer);
