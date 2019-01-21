@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import QuestionInput from "./QuestionInput";
-import Goodbye from "./Goodbye";
 
 import doesAnswerMeetCondition from "../../helpers/doesAnswerMeetCondition";
 import findItemByPosition from "../../helpers/findItemByPosition";
@@ -82,7 +81,7 @@ export default class FormViewer extends Component {
       <form onSubmit={e => this.submit(e)}>
         This is From Viewer:
         {noMoreQuestions ? (
-          <Goodbye />
+          <p>Goodbye!!!</p>
         ) : (
           <QuestionInput
             key={current.id}

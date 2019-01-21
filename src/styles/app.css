@@ -1,4 +1,4 @@
-@import "./layout.css";
+/* @import "./layout.css";
 @import "./colors.css";
 
 .App {
@@ -6,9 +6,9 @@
 }
 
 fieldset {
-  margin-top: 1.5rem;
+  margin: 0;
 }
 
 .warning {
   color: red;
-}
+} */

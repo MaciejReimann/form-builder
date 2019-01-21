@@ -1,14 +1,31 @@
 import React from "react";
 
+import { TextField, MenuItem } from "@material-ui/core";
+
 export default function SelectType({ onChange, value }) {
+  const types = ["Yes / No", "Text", "Number"];
   return (
-    <p>
-      <label>Type:</label>
-      <select name="inputType" onChange={e => onChange(e)} value={value}>
-        <option>Yes / No</option>
-        <option>Text</option>
-        <option>Number</option>
-      </select>
-    </p>
+    <TextField
+      name="inputType"
+      id="select-type"
+      select
+      label="Type:"
+      // className={classes.textField}
+      value={value}
+      onChange={e => onChange(e)}
+      // SelectProps={{
+      //   MenuProps: {
+      //     className: classes.menu
+      //   }
+      // }}
+      helperText="Please select ....."
+      margin="normal"
+    >
+      {types.map(option => (
+        <MenuItem key={option} value={option}>
+          {option}
+        </MenuItem>
+      ))}
+    </TextField>
   );
 }

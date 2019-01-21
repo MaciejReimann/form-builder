@@ -4,7 +4,7 @@ export default function SelectCondition({ parentInput, onChange }) {
   if (parentInput === "Text") {
     return (
       <p>
-        <label>Conditon:</label>
+        <label className="label">Conditon:</label>
         <select name="conditionType" onChange={onChange} value="Equals">
           <option value="Equals">Equals</option>
         </select>
@@ -14,7 +14,7 @@ export default function SelectCondition({ parentInput, onChange }) {
   } else if (parentInput === "Yes / No") {
     return (
       <p>
-        <label>Conditon:</label>
+        <label className="label">Conditon:</label>
         <select name="conditionType" onChange={onChange}>
           <option value="Equals">Equals</option>
         </select>
@@ -27,7 +27,7 @@ export default function SelectCondition({ parentInput, onChange }) {
   }
   return (
     <p>
-      <label>Conditon:</label>
+      <label className="label">Conditon:</label>
       <select name="conditionType" onChange={onChange} value="Equals">
         <option value="Less Than">Less Than</option>
         <option value="Equals">Equals</option>
